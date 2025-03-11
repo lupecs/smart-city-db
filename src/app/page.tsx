@@ -9,7 +9,7 @@ const Dashboard = () => {
 
   return (
     <div className="flex h-screen bg-gray-900 text-white">
-      {/* Sidebar Navigation */}
+      {/* Sidebar */}
       <aside className="w-64 bg-gray-800 p-5 space-y-4">
         <h2 className="text-xl font-bold text-cyan-400">
           Smart City Dashboard
@@ -27,7 +27,6 @@ const Dashboard = () => {
         </nav>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 p-6 overflow-y-auto">
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
@@ -37,7 +36,6 @@ const Dashboard = () => {
           {selectedCity} Overview
         </motion.h1>
 
-        {/* Weather Widget Placement */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <WeatherWidget city={selectedCity} />
         </div>

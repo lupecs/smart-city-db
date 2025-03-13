@@ -22,12 +22,8 @@ const AirQualityWidget = () => {
   const [loading, setLoading] = useState(false);
 
   const getQuality = (aqi: number) => {
-    if (aqi <= 50) return "Good";
-    if (aqi <= 100) return "Moderate";
-    if (aqi <= 150) return "Unhealthy for Sensitive Groups";
-    if (aqi <= 200) return "Unhealthy";
-    if (aqi <= 300) return "Very Unhealthy";
-    return "Hazardous";
+    const levels = ["Good", "Fair", "Moderate", "Poor", "Very Poor"];
+    return levels[aqi - 1] || "Unknown";
   };
 
   useEffect(() => {
@@ -46,7 +42,11 @@ const AirQualityWidget = () => {
         const airQualityRes = await axios.get(
           `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`
         );
-        setAirQuality(airQualityRes.data.list[0]);
+        setAirQuality({
+          name: city,
+          aqi: airQualityRes.data.list[0].main.aqi,
+          components: airQualityRes.data.list[0].components,
+        });
       } catch (error) {
         console.error("Failed to fetch air quality", error);
       } finally {
@@ -63,9 +63,7 @@ const AirQualityWidget = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <h2 className="text-2xl font-semibold mb-4">
-        Air Quality in {airQuality.name || city}
-      </h2>
+      <h2 className="text-2xl font-semibold mb-4">Air Quality in {city}</h2>
       {loading && <p>Loading...</p>}
       {airQuality && (
         <>
